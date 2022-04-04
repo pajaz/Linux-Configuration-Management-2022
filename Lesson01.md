@@ -1,17 +1,28 @@
 # h1 Hei maailma & monet tilat
 
+Part of Linux Configuration Management ICT4TN022-3015 course of Haaga-Helia University of Applied Sciences held by Tero Karvinen. Course is in Finnish.
+
+Course page: https://terokarvinen.com/2021/penetration-testing-course-2022-spring/
+
 ## z) Lue ja tiivistä kukin artikkeli muutamalla ranskalaisella viivalla. 
 Tässä z-alakohdassa ei tarvitse siis tehdä testejä tietokoneella.  
 
-  - Karvinen 2021: Salt Run Command Locally
-  - Karvinen 2018: Salt Quickstart - Salt Stack Master and Slave on Ubuntu
-    Linux
-  - Karvinen 2017: Vagrant Revisited - Install & Boot New Virtual Machine in 31
-    seconds
-  - Karvinen 2021: Two Machine Virtual Network With Debian 11 Bullseye and
-    Vagrant
-  - Karvinen 2020: Command Line Basics Revisited
-
+  - [Karvinen 2021: Salt Run Command Locally](https://terokarvinen.com/2021/salt-run-command-locally/)  
+    * Hyödyllisiä komentoja aloittelijalle.  
+    * Joitain asioita voisi mahdollisesti selittää sivulla vähän paremmin. Lähinnä sivu on vain komentoja ilman tarkempaa kerrontaa.  
+      
+  - [Karvinen 2018: Salt Quickstart - Salt Stack Master and Slave on Ubuntu Linux](https://terokarvinen.com/2018/salt-quickstart-salt-stack-master-and-slave-on-ubuntu-linux/)   
+    * Selkeä, helposti noudatettava ohjeistus, joka toimii myös Debianilla.  
+      
+  - [Karvinen 2017: Vagrant Revisited - Install & Boot New Virtual Machine in 31 seconds](https://terokarvinen.com/2017/04/11/vagrant-revisited-install-boot-new-virtual-machine-in-31-seconds/)  
+    * Erittäin hyvä ohjeistus nopeaan virtuaalikoneen luontiin.  
+      
+  - [Karvinen 2021: Two Machine Virtual Network With Debian 11 Bullseye and Vagrant](https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/)  
+    * Samaa kuin edellisestä. Kopioin artikkelilta nuo koodirivit ja hetkessä ohjeita noudattaen minulla oli kaksi samassa verkossa olevaa virtuaalikonetta ilman graafista käyttöliittymää käytössäni.  
+      
+  - [Karvinen 2020: Command Line Basics Revisited](http://terokarvinen.com/2020/command-line-basics-revisited/)  
+    * Hyvä artikkeli uusille käyttäjille ja muistia virkistämään.  
+  
 Tee ja raportoi: Kokeet tulee tehdä tietokoneella ja kirjoittaa raportti
 samalla. Vaikka olisit joskus kokeillut samanlaisia asioita, pelkkä muistelu ei
 riitä, vaan testit tulee tehdä ja raportoida samalla.
@@ -392,11 +403,185 @@ Oheiseen komentoon laitoin edellisestä kohdasta sellaisia tietoja joiden näkis
   
 ## d) Idempotenssi. Tee idempotentti esimerkkikomento saltilla. Aja komentoa useita kertoja. Osoita selitetyin esimerkein, että komentosi on idempotentti.
   
+Idempotenssi ei oikeastaan sanonut minulle paljoakaan, kun luin tämän tehtävänannon.  
+Selvittelin asiaa ja löysin sivuston, jolla asia on väännetty rautalangasta: https://www.abstractapi.com/api-glossary/idempotency  
+Idempotenssilla siis tarkoitetaan tässä tapauksessa operaatiota, jonka voit suorittaa vaikka kymmeniä kertoja peräkkäin, mutta se toteutuu ainoastaan kerran, jos ei suorituskertojen välissä tapahdu muutosta.  
+Sivuston oikean elämän rautalanka esimerkkinä toimii hissin tilaaminen. Kun tilaat hissin kerrokseesi kerran, se lähtee tulemaan luoksesi. Voit painaa tilauspainiketta vaikka kuinka monta kertaa, mutta hissi tulee vain kerran. Kun hissi on kerroksessasi, tilauspainikkeen painaminen ei myöskään tuo uutta hissiä paikalle. Vasta, kun hissin kontrollijärjestelmä huomaa, että hissi on poistunut, aiheuttaa napin painaminen uuden tilauksen. Samaa voidaan soveltaa esimerkiksi käyttäjän tai tiedoston luomiseen saltilla. Komennon tulee olla sellainen, että se luo uuden käyttäjän/tiedoston vain kerran, vaikka komento ajettaisiin n-kertaa (n>0).  
   
-  
-## e) Omat mausteet. Kokeile jotain uutta (ei aiemmin kurssilla näytettyä) ominaisuutta kustakin tärkeimmästä tilafunktiosta pkg, file, service, user.
+Loin testatakseni lokaalisti uuden käyttäjän saltilla:
+```
+pajazzo@derpMaster:$ sudo salt-call --local state.single user.present newguy
+local:
+----------
+          ID: newguy
+    Function: user.present
+      Result: True
+     Comment: New user newguy created   # Luotiin uusi käyttäjä newguy
+     Started: 23:59:46.395093
+    Duration: 158.88 ms
+     Changes:   
+              ----------
+              fullname:
+              gid:
+                  1001
+              groups:
+                  - newguy
+              home:
+                  /home/newguy
+              homephone:
+              name:
+                  newguy
+              other:
+              passwd:
+                  x
+              roomnumber:
+              shell:
+                  /bin/sh
+              uid:
+                  1001
+              workphone:
 
-## f) Herra ja orja. Asenna Salt master-slave arkkitehtuurilla. Anna orjalle komento. (Tämä tehtävä lienee hieman haastavampi) Update 2022-03-31: Voit asentaa tässä molemmat, herran ja orjan, samalle koneelle.
+Summary for local
+------------
+Succeeded: 1 (changed=1) # Komennon suoritus onnistui. Tehty yksi muutos, koska käyttäjää newguy ei aiemmin ollut olemassa.
+Failed:    0
+------------
+Total states run:     1
+Total run time: 158.880 ms
+```
+Testasin komentoa uudelleen:  
+```
+pajazzo@derpMaster:$ sudo salt-call --local state.single user.present newguy
+local:
+----------
+          ID: newguy
+    Function: user.present
+      Result: True
+     Comment: User newguy is present and up to date     # Huomataan, että käyttäjä on jo olemassa
+     Started: 00:01:55.736525
+    Duration: 26.985 ms
+     Changes:   
+
+Summary for local
+------------
+Succeeded: 1    # Komennon suoritus onnistui. Ei muutoksia, koska käyttäjä newguy on jo olemassa.
+Failed:    0
+------------
+Total states run:     1
+Total run time:  26.985 ms
+```
+Edellistä komentoa testasin, vielä kerran samoin tuloksin joten voinen turvallisin mielin todeta komennon olevan idempotentti.  
+
+## e) Omat mausteet. Kokeile jotain uutta (ei aiemmin kurssilla näytettyä) ominaisuutta kustakin tärkeimmästä tilafunktiosta pkg, file, service, user.  
+En valitettavasti saltin manuaaliakaan selaamalla keksi hirveästi muuta käyttöä pkg tilafunktioille kuin poistaminen ja asentaminen, jotka ovat molemmat jo kurssilla olleet käytössä. Manuaalissa toki mainitaan paljon muitakin, mutta ovat minulle aika hepreaa eli en keksi niille käyttöä. User -tiloista en löydä dokumentaatiosta kuin jo esitellyt absent ja present toiminnot.   
+
+```
+pajazzo@derpMaster:$ sudo salt-call --local state.single pkg.installed apache2  ## Perus Apachen asennus
+local:
+----------
+          ID: apache2
+    Function: pkg.installed
+      Result: True
+     Comment: The following packages were installed/updated: apache2
+     Started: 01:14:17.781134
+    Duration: 10440.301 ms
+     Changes:   
+              ----------
+              apache2:
+                  ----------
+                  new:
+                      2.4.53-1~deb11u1
+                  old:
+              apache2-data:
+                  ----------
+                  new:
+                      2.4.53-1~deb11u1
+                  old:
+              apache2-utils:
+                  ----------
+                  new:
+                      2.4.53-1~deb11u1
+                  old:
+
+Summary for local
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time:  10.440 s
+
+pajazzo@derpMaster:$ sudo salt-call --local -l info state.single service.disabled apache2   ## Toisin kuin dead, disabled ei sammuta palvelua vaan asettaa sen tilaan, jossa sitä ei käynnistetä koneen uudelleenkäynnistyksen jälkeen. 
+local:
+----------
+          ID: apache2
+    Function: service.disabled
+      Result: True
+     Comment: Service apache2 has been disabled, and is in the desired state
+     Started: 01:16:47.783962
+    Duration: 888.527 ms
+     Changes:   
+              ----------
+              apache2:
+                  True
+
+Summary for local
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time: 888.527 ms
+pajazzo@derpMaster:$ sudo systemctl status apache2
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; disabled; vendor preset: enable>
+     Active: active (running) since Mon 2022-04-04 23:38:47 EEST; 1h 38min ago
+       Docs: https://httpd.apache.org/docs/2.4/
+   Main PID: 671 (apache2)
+      Tasks: 55 (limit: 4519)
+     Memory: 11.6M
+        CPU: 504ms
+     CGroup: /system.slice/apache2.service
+             ├─671 /usr/sbin/apache2 -k start
+             ├─679 /usr/sbin/apache2 -k start
+             └─680 /usr/sbin/apache2 -k start
+
+huhti 04 23:38:46 derpMaster systemd[1]: Starting The Apache HTTP Server...
+huhti 04 23:38:47 derpMaster apachectl[637]: AH00558: apache2: Could not reliably determi>
+huhti 04 23:38:47 derpMaster systemd[1]: Started The Apache HTTP Server.
+
+pajazzo@derpMaster:$ sudo salt-call --local state.single file.directory /home/pajazzo/Instructions  ## Luodaan ohjekansio käyttäjän kotikansioon
+local:
+----------
+          ID: /home/pajazzo/Instructions
+    Function: file.directory
+      Result: True
+     Comment: Directory /home/pajazzo/Instructions updated
+     Started: 01:09:46.720807
+    Duration: 25.046 ms
+     Changes:   
+              ----------
+              /home/pajazzo/Instructions:
+                  New Dir
+
+Summary for local
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time:  25.046 ms
+
+```
+Edellisillä komennoilla asensin apache2 paketin minion koneelle, asetin Apachen tilaan, jossa se ei käynnisty automaattisesti, kun kone uudelleenkäynnistetään seuraavan kerran ja loin käyttäjälle pajazzo kotihakemistoon ohjekansion Instructions, johon voidaan laittaa esimerkiksi käyttäjälle hyödyllisiä ohjeita, kuten kuinka USB-kuulokkeet toimivat tietokoneen kanssa. Ohjeita joita kokemuksesta osaan sanoa, että kukaan ei lue.  
+  
+Kysymyksiä:  
+Onko komentoriviltä salt-call --local avulla mahdollista luoda sama tiedosto/kansio esim kaikkien minion koneen käyttäjien kotihakemistoon?  
+Onko komentoriviltä mahdollista user tilojen avulla muuttaa esim. käyttäjän fullname tai lisätä/poistaa käyttäjiä ryhmästä? Ylipäänsä muokata käyttäjän tietoja. 
+    
+## f) Herra ja orja. Asenna Salt master-slave arkkitehtuurilla. Anna orjalle komento. (Tämä tehtävä lienee hieman haastavampi) Update 2022-03-31: Voit asentaa tässä molemmat, herran ja orjan, samalle koneelle.  
+
+
 
 ## h) Vapaaehtoinen: kokeile Saltia Windowsissa.
 
