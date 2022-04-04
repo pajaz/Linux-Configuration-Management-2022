@@ -61,7 +61,10 @@ man lsb_release
   
 ## b) Onko tietoa? Kerää jostain koneesta tiedot Saltilla, esimerkiksi käyttöjärjestelmä, vapaan muistin määrä, virtualisointi jne. Poimi tuloksesta olennaiset osat ja selitä ne.  
      
-```
+<details>    
+    <summary>Klikkaa nähdäksesi kommenon sudo salt-call --local grains.items koko tuloste</summary>
+    <pre>
+        <code>
 pajazzo@derpMaster:$ sudo salt-call --local grains.items
 [sudo] password for pajazzo: 
 local:
@@ -365,7 +368,11 @@ local:
         False
     zmqversion:
         4.3.4
-```
+        </code>
+    </pre>
+</details>  
+  
+---
 Koneesta kiinnostavia tietoja tulosteessa:  
 Käyttöjärjestelmä on 64-bittinen Linux Debian 11 Bullseye, kyseessä on Virtualboxilla pyörivä virtuaalikone. 
 Vapaan muistin määrä tällä hetkellä 3847MB.   
@@ -470,7 +477,7 @@ Failed:    0
 Total states run:     1
 Total run time:  26.985 ms
 ```
-Edellistä komentoa testasin, vielä kerran samoin tuloksin joten voinen turvallisin mielin todeta komennon olevan idempotentti.  
+Edellistä komentoa testasin vielä kerran samoin tuloksin joten voinen turvallisin mielin todeta komennon olevan idempotentti.  
 
 ## e) Omat mausteet. Kokeile jotain uutta (ei aiemmin kurssilla näytettyä) ominaisuutta kustakin tärkeimmästä tilafunktiosta pkg, file, service, user.  
 En valitettavasti saltin manuaaliakaan selaamalla keksi hirveästi muuta käyttöä pkg tilafunktioille kuin poistaminen ja asentaminen, jotka ovat molemmat jo kurssilla olleet käytössä. Manuaalissa toki mainitaan paljon muitakin, mutta ovat minulle aika hepreaa eli en keksi niille käyttöä. User -tiloista en löydä dokumentaatiosta kuin jo esitellyt absent ja present toiminnot.   
