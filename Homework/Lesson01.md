@@ -376,8 +376,8 @@ local:
 Koneesta kiinnostavia tietoja tulosteessa:  
 Käyttöjärjestelmä on 64-bittinen Linux Debian 11 Bullseye, kyseessä on Virtualboxilla pyörivä virtuaalikone. 
 Kokonaismuistin määrä 3847MB.   
-Prosessori (tässä tapauksessa isäntäkoneen) on Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz joka noudattaa x86_64 arkkitehtuuria eli AMD:n kehittämä 64-bittinen prosessoriarkkitehtuuri, joka on tänä päivänä yleisin käytössä oleva arkkitehtuuri. (Muokattu 6.4.2022 luennon aikana)  
-Tulosteesta selviää, myös laitteen nimi derpMaster sekä sen ipv4/6 osoitteet ja mm. saltin versio 3002.6.
+Prosessori (tässä tapauksessa isäntäkoneen) on Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz joka noudattaa x86_64 arkkitehtuuria eli AMD:n kehittämä 64-bittinen prosessoriarkkitehtuuri, joka on tänä päivänä yleisin käytössä oleva arkkitehtuuri.   
+Tulosteesta selviää, myös laitteen nimi derpMaster sekä sen ipv4/6 osoitteeet (localhostin osoite, sekä paikallisverkon ip-osoite molemmista) ja mm. saltin versio 3002.6, joka on tällä hetkellä uusin apt paketinhallinnasta saatava versio. **(Muokattu 6.4.2022 luennon aikana)**   
   
 Kaikenkaikkiaan tuloste antaa todella paljon tietoa ja itselleni ei ole ihan selvää, mikä kaikki siitä on tärkeää.
 
@@ -585,6 +585,9 @@ Edellisillä komennoilla asensin apache2 paketin minion koneelle, asetin Apachen
 Kysymyksiä:  
 Onko komentoriviltä salt-call --local avulla mahdollista luoda sama tiedosto/kansio esim kaikkien minion koneen käyttäjien kotihakemistoon?  
 Onko komentoriviltä mahdollista user tilojen avulla muuttaa esim. käyttäjän fullname tai lisätä/poistaa käyttäjiä ryhmästä? Ylipäänsä muokata käyttäjän tietoja. 
+
+Lähde:
+Salt manual
     
 ## f) Herra ja orja. Asenna Salt master-slave arkkitehtuurilla. Anna orjalle komento. (Tämä tehtävä lienee hieman haastavampi) Update 2022-03-31: Voit asentaa tässä molemmat, herran ja orjan, samalle koneelle.  
 
