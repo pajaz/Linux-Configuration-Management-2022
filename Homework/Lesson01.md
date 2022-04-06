@@ -375,8 +375,8 @@ local:
 ---
 Koneesta kiinnostavia tietoja tulosteessa:  
 Käyttöjärjestelmä on 64-bittinen Linux Debian 11 Bullseye, kyseessä on Virtualboxilla pyörivä virtuaalikone. 
-Vapaan muistin määrä tällä hetkellä 3847MB.   
-Prosessori (tässä tapauksessa isäntäkoneen) on Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz joka noudattaa x86_64 arkkitehtuuria.  
+Kokonaismuistin määrä 3847MB.   
+Prosessori (tässä tapauksessa isäntäkoneen) on Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz joka noudattaa x86_64 arkkitehtuuria eli AMD:n kehittämä 64-bittinen prosessoriarkkitehtuuri, joka on tänä päivänä yleisin käytössä oleva arkkitehtuuri. (Muokattu 6.4.2022 luennon aikana)  
 Tulosteesta selviää, myös laitteen nimi derpMaster sekä sen ipv4/6 osoitteet ja mm. saltin versio 3002.6.
   
 Kaikenkaikkiaan tuloste antaa todella paljon tietoa ja itselleni ei ole ihan selvää, mikä kaikki siitä on tärkeää.
