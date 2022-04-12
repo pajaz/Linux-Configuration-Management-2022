@@ -483,7 +483,8 @@ Edellistä komentoa testasin vielä kerran samoin tuloksin joten voinen turvalli
 En valitettavasti saltin manuaaliakaan selaamalla keksi hirveästi muuta käyttöä pkg tilafunktioille kuin poistaminen ja asentaminen, jotka ovat molemmat jo kurssilla olleet käytössä. Manuaalissa toki mainitaan paljon muitakin, mutta ovat minulle aika hepreaa eli en keksi niille käyttöä. User -tiloista en löydä dokumentaatiosta kuin jo esitellyt absent ja present toiminnot.   
 
 ```
-pajazzo@derpMaster:$ sudo salt-call --local state.single pkg.installed apache2  ## Perus Apachen asennus
+pajazzo@derpMaster:$ sudo salt-call --local state.single pkg.installed apache2  ## Perus Apachen asennus. Lähde sudo salt-call --local sys
+                                                                                ## state_doc pkg.installed  
 local:
 ----------
           ID: apache2
@@ -518,8 +519,11 @@ Failed:    0
 Total states run:     1
 Total run time:  10.440 s
 
-pajazzo@derpMaster:$ sudo salt-call --local -l info state.single service.disabled apache2   ## Toisin kuin dead, disabled ei sammuta palvelua vaan asettaa sen tilaan, jossa sitä ei käynnistetä koneen uudelleenkäynnistyksen jälkeen. 
-local:
+pajazzo@derpMaster:$ sudo salt-call --local -l info state.single service.disabled apache2   ## Toisin kuin dead, disabled ei sammuta palvelua vaan
+                                                                                            ## asettaa sen tilaan, jossa sitä ei käynnistetä koneen
+                                                                                            ## uudelleenkäynnistyksen jälkeen. Lähde:
+                                                                                            ## sudo salt-call --local sys.state_doc service.disabled
+ local:
 ----------
           ID: apache2
     Function: service.disabled
@@ -557,9 +561,9 @@ huhti 04 23:38:46 derpMaster systemd[1]: Starting The Apache HTTP Server...
 huhti 04 23:38:47 derpMaster apachectl[637]: AH00558: apache2: Could not reliably determi>
 huhti 04 23:38:47 derpMaster systemd[1]: Started The Apache HTTP Server.
 
-pajazzo@derpMaster:$ sudo salt-call --local state.single file.directory /home/pajazzo/Instructions  ## Luodaan ohjekansio käyttäjän kotikansioon
-local:
-----------
+pajazzo@derpMaster:$ sudo salt-call --local state.single file.directory /home/pajazzo/Instructions  ## Luodaan ohjekansio käyttäjän kotikansioon.
+local:                                                                                              ## Komento löytyy saltin manuaalista haulla:   
+----------                                                                                          ## sudo salt-call --local sys.state_doc file.directory    
           ID: /home/pajazzo/Instructions
     Function: file.directory
       Result: True
@@ -587,7 +591,7 @@ Onko komentoriviltä salt-call --local avulla mahdollista luoda sama tiedosto/ka
 Onko komentoriviltä mahdollista user tilojen avulla muuttaa esim. käyttäjän fullname tai lisätä/poistaa käyttäjiä ryhmästä? Ylipäänsä muokata käyttäjän tietoja. 
 
 Lähde:
-Salt manual
+Salt manual (sys.state_doc)
     
 ## f) Herra ja orja. Asenna Salt master-slave arkkitehtuurilla. Anna orjalle komento. (Tämä tehtävä lienee hieman haastavampi) Update 2022-03-31: Voit asentaa tässä molemmat, herran ja orjan, samalle koneelle.  
 
