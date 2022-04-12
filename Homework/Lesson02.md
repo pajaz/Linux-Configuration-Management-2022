@@ -30,7 +30,7 @@ Course page: https://terokarvinen.com/2021/configuration-management-systems-2022
 - Selkeä ohjeistus Salt Package-File-Services Apache2 asennukseen.    
 - Tämän sivun kohdassa a1. tehty ja dokumentoitu asennus sivun ohjeiden mukaisesti, mutta ilman käyttäjäsivujen käyttöönottoa.  
 
-### [Pkg-File-Service – Control Daemons with Salt – Change SSH Server Port](https://terokarvinen.com//2018/  pkg-file-service-control-daemons-with-salt-change-ssh-server-port/)
+### [Pkg-File-Service – Control Daemons with Salt – Change SSH Server Port](https://terokarvinen.com//2018/pkg-file-service-control-daemons-with-salt-change-ssh-server-port/)
   
 - Selkeä ohjeistus Salt Package-File-Servicen avulla SSH-etäyhteyden asennukseen.   
 - Uusia käyttäjiä varten voisi olla huomautus, etteivät suoraan käytä sivun konfiguraatiotiedostoa.    
