@@ -6,14 +6,36 @@ Course page: https://terokarvinen.com/2021/configuration-management-systems-2022
 
 ## z) Lue ja tiivistä, muutama ranskalainen viiva riittää.
 
-    SaltStack Configuration Management: Get Started Tutorial
-        [Introduction](https://docs.saltproject.io/en/getstarted/config/index.html)
-        [Functions](https://docs.saltproject.io/en/getstarted/config/functions.html)
-        [Files](https://docs.saltproject.io/en/getstarted/config/files.html)
-    [Karvinen 2008: Install Apache Web Server on Ubuntu](https://terokarvinen.com/2008/05/02/install-apache-web-server-on-ubuntu-4/index.html)
-    [Apache User Homepages Automatically – Salt Package-File-Service Example](https://terokarvinen.com//2018/apache-user-homepages-automatically-salt-package-file-service-example/)
-    [Pkg-File-Service – Control Daemons with Salt – Change SSH Server Port](https://terokarvinen.com//2018/pkg-file-service-control-daemons-with-salt-change-ssh-server-port/)
-    [SaltStack contributors 2021: Salt system architecture](https://docs.saltproject.io/en/latest/topics/salt_system_architecture.html)  
+### SaltStack Configuration Management: Get Started Tutorial
+  
+[Introduction](https://docs.saltproject.io/en/getstarted/config/index.html)  
+[Functions](https://docs.saltproject.io/en/getstarted/config/functions.html)  
+[Files](https://docs.saltproject.io/en/getstarted/config/files.html)  
+  
+- Salt tiloja hallitaan tietorakenteiden käsittelyyn tarkoitetulla YAML -kielellä  
+- Sisennys vaatii kahden välilyönnin käyttöä sarkaimen sijaan :\/
+- Tilan statement koostuu ID:stä, moduulista ja sen funktiosta (module.function) sekä funktion argumenteista.  
+- Erilaisten moduulien ja funktioiden kautta voi hallita lähes kaikkea tarpeellista järjestelmän käyttöönottamiseksi.  
+- Tiedostojen jako orjille/minioneille tapahtuu syntaksilla:  
+    `source: //salt://sovellus/tiedosto.example` (paikallisesti tämä olisi /srv/salt/sovellus/tiedosto.example, jos ei saltin oletusasetuksia ole muutettu)  
+
+    
+### [Karvinen 2008: Install Apache Web Server on Ubuntu](https://terokarvinen.com/2008/05/02/install-apache-web-server-on-ubuntu-4/index.html)  
+  
+- Minulla ei ole käytössäni tällä hetkellä yhtään Ubuntu -käyttöjärjestelmää, mutta tämän 2008 julkaistun artikkelin ohjeistus on pätevä edelleen vuonna 2022 ja näyttäisi olevan täysin identtinen Debianille.  
+- Tällä sivulla Apache asennus Debian 11 Linuxiin tehtävässä a), tosin ilman käyttäjäsivujen enablointia.  
+
+### [Apache User Homepages Automatically – Salt Package-File-Service Example](https://terokarvinen.com//2018/apache-user-homepages-automatically-salt-package-file-service-example/)  
+  
+- Selkeä ohjeistus Salt Package-File-Services Apache2 asennukseen.    
+- Tämän sivun kohdassa a1. tehty ja dokumentoitu asennus sivun ohjeiden mukaisesti, mutta ilman käyttäjäsivujen käyttöönottoa.  
+
+### [Pkg-File-Service – Control Daemons with Salt – Change SSH Server Port](https://terokarvinen.com//2018/  pkg-file-service-control-daemons-with-salt-change-ssh-server-port/)
+  
+- Selkeä ohjeistus Salt Package-File-Servicen avulla SSH-etäyhteyden asennukseen.   
+- Uusia käyttäjiä varten voisi olla huomautus, etteivät suoraan käytä sivun konfiguraatiotiedostoa.    
+  
+### [SaltStack contributors 2021: Salt system architecture](https://docs.saltproject.io/en/latest/topics/salt_system_architecture.html)  
 
 ## a) Oletussivu. Vaihda Apachen oletussivu päällekirjoittamalla /var/www/html/index.html. Voit käyttää pohjana tunnilla tekemääsi Apache-asennusta.  
   
@@ -22,8 +44,7 @@ Manuaalinen index.html sivun muuttaminen Linux Palvelimet 2022 -kurssin Github [
   
 Lähteet:  
 https://terokarvinen.com//2018/apache-user-homepages-automatically-salt-package-file-service-example/   
-https://www.linode.com/docs/guides/configure-apache-with-salt-stack/  
-  
+   
 1. Apache -asennus Saltilla  
   
     Avasin Master ja Minion koneeni (tässä vaiheessa vain yksi minion) ja varmistin, että salt yhteys koneilla on olemassa:  
@@ -386,10 +407,11 @@ Kuten tulosteesta huomataan, Salt asensi apache2 paketit uudelleen ja käynnisti
 Aikaa tähän kului huomattavasti pidempään, kuin aiempiin ajoihin, koska paketteja tarvitsi oikeasti ladata ja asentaa.  
   
 ## c) Shh! Asenna ja konfiguroi SSH-demoni. Laita se porttiin 7373.
-Debian 11 uuden openssh asennuksen konfiguraation sijainti: 
-/etc/ssh/sshd_config  
-
-1. Openssh manuaalinen asennus  
+  
+Lähde:  
+https://terokarvinen.com//2018/apache-user-homepages-automatically-salt-package-file-service-example/  
+  
+1. Openssh manuaalinen asennus testausta varten.  
     Aloitin asentamalla openssh-palvelimen manuaalisesti orjalle: 
     `pajazzo@derpSlave1:$ sudo apt-get install openssh-server`
     
@@ -408,7 +430,7 @@ Debian 11 uuden openssh asennuksen konfiguraation sijainti:
     `pajazzo@derpMaster:$ ssh pajazzo@192.168.1.8 -p 7373`
     Yhteys onnistui.  
   
-2. Openssh asetukset Saltiin  
+2. Openssh asetukset Saltiin.  
 
     Aloitin luomalla sshd konfiguraatiotiedoston, joka vain varmistaa openssh-palvelimen asennuksen aluksi:  
     ```
@@ -440,8 +462,26 @@ Debian 11 uuden openssh asennuksen konfiguraation sijainti:
     ```
      
     Tilan päivitys:  
-    `pajazzo@derpMaster:$ sudo salt '*' state.apply sshd`
-
+    `pajazzo@derpMaster:$ sudo salt '*' state.apply sshd`  
+    Jälleen muutoksia ei tarvinnut tehdä, koska sama tiedosto on jo olemassa orjalla. Tilojen päivitys kuitenkin onnistui.  
+      
+    Viimeisenä tein saltin sshd -konfiguraatiotiedostoon ssh-palvelun toiminnan varmistavat asetukset:  
+    ```
+    pajazzo@derpMaster:$ sudo micro sshd.sls 
+    pajazzo@derpMaster:$ cat sshd.sls 
+    openssh-server:
+      pkg.installed
+    /etc/ssh/sshd_config:
+      file.managed:
+        - source: salt://sshd_config
+    sshd:
+      service.running:
+        - watch:
+          - file: /etc/ssh/sshd_config
+    ```
+    Kyseiset rivit varmistavat, että palvelu on päällä ja tarvittaessa käynnistävät sen uudelleen, mikäli konfiguraatiotiedostoon on tehty muutoksia.  
+      
+    Ajoin tilat vielä kerran. Kaikki kolme osiota ajettu onnistuneesti. Muutoksia ei tarvinnut tehdä.  
 
 ## m) Vapaaehtoinen: Asenna ja konfiguroi Nginx-weppipalvelin.
 
