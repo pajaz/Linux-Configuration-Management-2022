@@ -225,55 +225,55 @@ https://terokarvinen.com//2018/apache-user-homepages-automatically-salt-package-
   
 3. Apachen lisäys saltin peruskonfiguraatioon.  
   
-Edelliset kohdat todettu toimiviksi, joten lisätään apache vielä saltin top.sls tiedostoon, jotta salt osaa hakea apachen asetukset oikeasta kansiosta, kun tila päivitetään.  
-  
-```
-pajazzo@derpMaster:$ sudo micro top.sls 
-#####################
-/srv/salt/top.sls 
-base:             
-  '*':             
-    - apache       
-#####################
-pajazzo@derpMaster:$ sudo salt '*' state.apply
-numberone:
-----------
-          ID: apache2
-    Function: pkg.installed
-      Result: True
-     Comment: All specified packages are already installed
-     Started: 11:58:24.488848
-    Duration: 50.054 ms
-     Changes:   
-----------
-          ID: /var/www/html/index.html
-    Function: file.managed
-      Result: True
-     Comment: File /var/www/html/index.html is in the correct state
-     Started: 11:58:24.541643
-    Duration: 18.883 ms
-     Changes:   
-----------
-          ID: apache2.service
-    Function: service.running
-        Name: apache2
-      Result: True
-     Comment: The service apache2 is already running
-     Started: 11:58:24.561110
-    Duration: 37.752 ms
-     Changes:   
+    Edelliset kohdat todettu toimiviksi, joten lisätään apache vielä saltin top.sls tiedostoon, jotta salt osaa hakea apachen asetukset oikeasta kansiosta, kun tila päivitetään.  
+    
+    ```
+    pajazzo@derpMaster:$ sudo micro top.sls 
+    #####################
+    /srv/salt/top.sls 
+    base:             
+    '*':             
+        - apache       
+    #####################
+    pajazzo@derpMaster:$ sudo salt '*' state.apply
+    numberone:
+    ----------
+            ID: apache2
+        Function: pkg.installed
+        Result: True
+        Comment: All specified packages are already installed
+        Started: 11:58:24.488848
+        Duration: 50.054 ms
+        Changes:   
+    ----------
+            ID: /var/www/html/index.html
+        Function: file.managed
+        Result: True
+        Comment: File /var/www/html/index.html is in the correct state
+        Started: 11:58:24.541643
+        Duration: 18.883 ms
+        Changes:   
+    ----------
+            ID: apache2.service
+        Function: service.running
+            Name: apache2
+        Result: True
+        Comment: The service apache2 is already running
+        Started: 11:58:24.561110
+        Duration: 37.752 ms
+        Changes:   
 
-Summary for numberone
-------------
-Succeeded: 3
-Failed:    0
-------------
-Total states run:     3
-Total run time: 106.689 ms
+    Summary for numberone
+    ------------
+    Succeeded: 3
+    Failed:    0
+    ------------
+    Total states run:     3
+    Total run time: 106.689 ms
 
-```
-  
-Nyt siis apachen -konfiguraatiota ei tarvitse erikseen ajaa vaan se ajetaan yleiskonfiguraation mukana, koska se on määritettynä top.sls tiedostoon.  
+    ```
+    
+    Nyt siis apachen -konfiguraatiota ei tarvitse erikseen ajaa vaan se ajetaan yleiskonfiguraation mukana, koska se on määritettynä top.sls tiedostoon.  
 
 
 ## b) Tri Kaaaos. Aiheuta erilaisia vikatilanteita ja osoita, kuinka Apache-tilasi korjaa ne. Voit esimerksi sulkea demonin (sudo systemctl stop foobar), poistaa asetukset tai poistaa apachen paketit. Osoita yksinkertaisin testein, saat palvelun toimimattomaksi, ja salt-tilasi saa sen jälleen toimimaan.
