@@ -8,3 +8,4 @@ Course page: https://terokarvinen.com/2021/configuration-management-systems-2022
 Lesson | Description
 ---|---
 [Lesson 01](Homework/Lesson01.md) | Hei maailma & monet tilat 
+[Lesson 02](Homework/Lesson02.md) | package-file-service  
