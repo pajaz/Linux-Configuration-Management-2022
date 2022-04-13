@@ -409,7 +409,7 @@ Aikaa tähän kului huomattavasti pidempään, kuin aiempiin ajoihin, koska pake
 ## c) Shh! Asenna ja konfiguroi SSH-demoni. Laita se porttiin 7373.
   
 Lähde:  
-https://terokarvinen.com//2018/apache-user-homepages-automatically-salt-package-file-service-example/  
+https://terokarvinen.com//2018/pkg-file-service-control-daemons-with-salt-change-ssh-server-port/
   
 1. Openssh manuaalinen asennus testausta varten.  
     Aloitin asentamalla openssh-palvelimen manuaalisesti orjalle: 
