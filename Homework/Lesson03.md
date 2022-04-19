@@ -10,7 +10,7 @@ Course page: https://terokarvinen.com/2021/configuration-management-systems-2022
 
 ## a) MarkDown. Tee tämän tehtävän raportti MarkDownina. Helpointa on tehdä raportti GitHub-varastoon, jolloin md-päätteiset tiedostot muotoillaan automaattisesti. Tyhjä rivi tekee kappalejaon, risuaita ‘#’ tekee otsikon, sisennys merkitsee koodinpätkän.  
 
-(Linkki tämän dokumentin raakaversioon)[https://raw.githubusercontent.com/pajaz/Linux-Configuration-Management-2022/main/Homework/Lesson03.md]
+[Linkki tämän dokumentin raakaversioon](https://raw.githubusercontent.com/pajaz/Linux-Configuration-Management-2022/main/Homework/Lesson03.md)
   
 ## b) Pull first. Tee useita muutoksia git-varastoosi. Tee muutama muutos, jossa yksi commit koskee useampaa tiedostoa. Anna hyvä kuvaukset (commit message), yksi englanninkielinen lause imperatiivissa (määräysmuodossa) "Add top level menu to Foobar synchronizer"
   
@@ -193,11 +193,35 @@ Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
 
 nothing to commit, working tree clean
 ```
+  
+Jos nyt tekisin ehdotetun pullin, päätyisi tuo testitiedosto takaisin koneelleni. Loin tässä vaiheessa uuden branchin nimeltä newmain, otin sen käyttöön checkout komennolla ja tein commitin ja pushin. Halusin tämän newmain branchin myös etärepositoriooni, jos vaikka vahingossa onnistuisin tekemään pahempia virheitä, niin ainakin kaikki on tallessa pilvessä.   
+Tämän jälkeen vaihdoin takaisin main -branchiini, resetoin main branchin samaan pisteeseen kuin newmain, tein commitin ja push-f eli push force vivun kanssa. Tässä välissä tuli tehtyä paljon testailua eri vaiheilla, joten muutamia ylimääräisiä committeja tuli tehtyä joita ei tässä kohdassa näy. Jos teet töitä muiden kanssa, älä käytä -f vipua pushin kanssa kevyin perustein, koska se pakottaa sinun muutoksesi branchiin.    
+``` 
+pajazzo@derpface:$ git branch newmain
+pajazzo@derpface:$ git checkout newmain
+Switched to branch 'newmain'
+pajazzo@derpface:$ git commit -a -m "newmain for merge"
+On branch newmain
+nothing to commit, working tree clean
+pajazzo@derpface:$ git push --set-upstream origin newmain
+pajazzo@derpface:$ git checkout main
+Already on 'main'
+Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+pajazzo@derpface:$ git reset --hard newmain 
+HEAD is now at 5830d17 testfiles removed
+pajazzo@derpface:$ git push -f origin main
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:pajaz/Linux-Configuration-Management-2022.git
+ + c5afb02...5830d17 main -> main (forced update)
+```  
+  
+Tämä aiheutti paljon merge konflikteja tiedostoon Lesson03.md jotka kävin ratkaisemassa paikallisesti. Visual Studio Codesta voidaan olla montaa mieltä, mutta konfliktien ratkaisu on siinä helppoa tähän tarkoitukseen luodun näkymän kautta. Kun konfliktit oli ratkaistu paikallisesti, tein normaalisti commitin ja pushin ja repositorioni on taas ajan tasalla.  
+
+Lopputulemana sanoisin, että git reset --hard komentoa ei kannata käyttää kevyin perustein ainakaan perumaan jo etärepositorioon pushattuja muutoksia, koska tämä aiheuttaa helposti ongelmia.    
 
 git reset --help komennon kautta selviää myös, että palautukseen voi käyttää commitin tunnuksen sijasta HEAD~x (x=1...n) parametria, joka palauttaa repositorion x:n verran taaksepäin commit historiassa. Erikoistapauksena, jos halutaan perua vain edellinen commit voidaan käyttää HEAD^ -parametria.  
-
-
-
+  
 ## d) Formula. Tee uusi salt-tila (formula, moduli, infraa koodina). (Eli uusi tiedosto esim. /srv/salt/terontila/init.sls). Voit tehdä ihan yksinkertaisen parin funktion (pkg, file...) tilan, tai edistyneemmin asentaa ja konfiguroida minkä vain uuden ohjelman: demonin, työpöytäohjelman tai komentokehotteesta toimivan ohjelman. Käytä tarvittaessa ‘find -printf “%T+ %p\n”|sort’ löytääksesi uudet asetustiedostot.
 
 ## f) Vapaaehtoinen: Laita srv/salt/ gittiin. Tee uusi moduli. Kloonaa varastosi toiselle koneelle (tai poista srv/salt ja palauta se kloonaamalla) ja jatka sillä.
