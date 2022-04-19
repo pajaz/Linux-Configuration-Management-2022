@@ -115,11 +115,7 @@ blame -komento näyttää tiedostoon tehdyt muutokset riveittäin. Tietue pitä�
   
 ## c) Huppis! Tee tyhmä muutos gittiin, älä tee commit:tia. Tuhoa huonot muutokset ‘git reset --hard’. Huomaa, että tässä toiminnossa ei ole peruutusnappia.
 
-<<<<<<< HEAD
 Poistin koko Homework sijainnin paikallisesta versiostani ja käytin git reset --hard komentoa, joka palautti repositorioini edellisen commitin tilaan, kuten viimeisestä git log -komennosta huomataan:  
-=======
-Poistin koko Homework sijainnin paikallisesta versiostani ja käytin git reset --hard komentoa, joka palautti repositorioini edellisen commitin tilaan:  
->>>>>>> 63a8f531db7c8b4796b6e61deaa11898773779b2
 ```
 pajazzo@derpface:$ rm -r Homework/
 pajazzo@derpface:$ 
@@ -129,7 +125,6 @@ pajazzo@derpface:$ git reset --hard
 HEAD is now at 808fb02 Add Lesson03.md assignment b
 pajazzo@derpface:$ ls
 Homework  PersonalNotes  README.md  
-<<<<<<< HEAD
 pajazzo@derpface:$ git log
 commit 808fb0222a54792dbb3744102fb306740dceef81 (HEAD -> main, origin/main, origin/HEAD)
 Author: pajaz <mikko.pajunen@myy.haaga-helia.fi>
@@ -181,13 +176,27 @@ pajazzo@derpface:$ git reset --hard 808fb0222a54792dbb3744102fb306740dceef81
 HEAD is now at 808fb02 Add Lesson03.md assignment b
 pajazzo@derpface:$ ls
 Homework  PersonalNotes  README.md
+pajazzo@derpface:$ git log
+commit 808fb0222a54792dbb3744102fb306740dceef81 (HEAD -> main)
+Author: pajaz <mikko.pajunen@myy.haaga-helia.fi>
+Date:   Tue Apr 19 11:28:46 2022 +0300
+
+    Add Lesson03.md assignment b
 ```  
   
-Kammottava virhe korjattu.  
-
-=======
+git log -komennon ajosta huomataan, että virheellinen commit on poistunut kokonaan lokihistoriasta ja virhe siis korjattu. Kuitenkin kyseinen tiedosto on edelleen olemassa remote repositoriossa ja git status ilmoittaa, että paikallinen repositorioini on yhden commitin jäljessä:  
 ```
->>>>>>> 63a8f531db7c8b4796b6e61deaa11898773779b2
+pajazzo@derpface:$ git status
+On branch main
+Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+```
+
+git reset --help komennon kautta selviää myös, että palautukseen voi käyttää commitin tunnuksen sijasta HEAD~x (x=1...n) parametria, joka palauttaa repositorion x:n verran taaksepäin commit historiassa. Erikoistapauksena, jos halutaan perua vain edellinen commit voidaan käyttää HEAD^ -parametria.  
+
+
 
 ## d) Formula. Tee uusi salt-tila (formula, moduli, infraa koodina). (Eli uusi tiedosto esim. /srv/salt/terontila/init.sls). Voit tehdä ihan yksinkertaisen parin funktion (pkg, file...) tilan, tai edistyneemmin asentaa ja konfiguroida minkä vain uuden ohjelman: demonin, työpöytäohjelman tai komentokehotteesta toimivan ohjelman. Käytä tarvittaessa ‘find -printf “%T+ %p\n”|sort’ löytääksesi uudet asetustiedostot.
 
