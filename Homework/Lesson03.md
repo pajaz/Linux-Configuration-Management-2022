@@ -272,10 +272,10 @@ Asennus onnistui joten siirryin konfiguraatiovaiheeseen.
   
 Tässä kohdassa jouduin vähän tutkimaan ufw:n konfiguraatiokansiota /etc/ufw/ löytääkseni, mikä/mitkä tiedostot pitävät sisällään halutut asetukset.  
 Loogisesti ajattelin, että tiedosto ufw.conf olisi tärkeä tähän. Kyseinen tiedosto pitääkin sisällään palomuurin palvelun käynnistämiseen tietokoneen käynnistämisen yhteydessä tarvittavan rivin, sekä palomuurin lokitason määrityksen. Hyödyllinen tiedosto eli otetaan talteen.  
-user.config ja user6.config tiedostot tuntuivat pitävän sisällään tehdyt porttien avaustiedot riveillä:  
+user.config ja user6.config tiedostot tuntuivat pitävän sisällään tehdyt porttien avaustiedot riveillä (**Huom.** rivit eivät ole täysin samanlaiset molemmissa user* tiedostoissa):  
   
     $ ### tuple ### allow tcp 7373 ::/0 any ::/0 in
-    $ -A ufw 6-user-input -p tcp --dport 7373 -j ACCEPT
+    $ -A ufw6-user-input -p tcp --dport 7373 -j ACCEPT
   
 Loput /etc/ufw ja etc/ufw/applications.d/ tiedostoista eivät pitäneet sisällään näihin asetuksiin liittyviä tietueita. Tosin applications.d sijainnissa oleva openssh-server asetustiedosto määrittää portiksi 22 eli saman joka viime viikolla vaihdettiin porttiin 7373. Tämä kansio pitää oman ymmärrykseni mukaan sisällään sovellusten omia ufw -asetustiedostoja, jotka voidaan ajaa komennolla `sudo ufw allow *tiedoston_nimi*` eli tässä vaiheessa näistä ei tarvitse välittää.  
   
@@ -360,6 +360,7 @@ numberone:
 Tämän jälkeen myös yhteys lähti toimimaan koneelle, eli asetukset menivät oikein läpi ilman uudelleenkäynnistystä.  
 Pitää vielä testata miten tuon komentojen ajon saisi sisällytettyä asennuksen yhteyteen.  
   
+Huomasin, että minulla oli **kirjoitusvirhe** tiedostossa srv/salt/ufw/files/user.rules-default, joka aiheutti ongelmakäyttäytymisen, jonka tuo enable + reload tai reboot yhdistelmä korjasi itsestään. Huomasin ongelman, kun tilojen ajaminen useamman kerran teki aina muutoksia kyseiseen tiedostoon, vaikkei siihen olisi koskettu välissä. Korjattuani virheen default-tiedostoon, alkoivat asetukset toimimaan kuten pitääkin.  
 
 ## f) Vapaaehtoinen: Laita srv/salt/ gittiin. Tee uusi moduli. Kloonaa varastosi toiselle koneelle (tai poista srv/salt ja palauta se kloonaamalla) ja jatka sillä.
 
