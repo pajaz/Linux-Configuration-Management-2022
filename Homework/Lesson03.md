@@ -228,139 +228,139 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
   
 1. Manuaalinen asennus.  
   
-    $ sudo apt-get install ufw
-    $ sudo ufw enable
-    $ ## palvelimen uudelleenkäynnistys
-    $ sudo ufw status
-    $ sudo systemctl status ufw.service
+        $ sudo apt-get install ufw
+        $ sudo ufw enable
+        $ ## palvelimen uudelleenkäynnistys
+        $ sudo ufw status
+        $ sudo systemctl status ufw.service
 
-Molemmat status-checkit ilmoittivat palomuurin olevan päällä.  
+    Molemmat status-checkit ilmoittivat palomuurin olevan päällä.  
   
 2. Manuaalinen porttien avaus ja ssh-yhteyden testaus.    
   
-Edellisellä viikolla asetin minion koneen ssh -palvelimen toimimaan portin 7373 kautta. Koska koneelle on asennettuna palomuuri, piti kyseinen portti avata käyttöön, jotta ssh -yhteys koneelle onnistuu ulkopuolelta.  
-  
-    $ sudo ufw allow 7373/tcp  
+    Edellisellä viikolla asetin minion koneen ssh -palvelimen toimimaan portin 7373 kautta. Koska koneelle on asennettuna palomuuri, piti kyseinen portti avata käyttöön, jotta ssh -yhteys koneelle onnistuu ulkopuolelta.  
+    
+        $ sudo ufw allow 7373/tcp  
 
-Masterilla testaus: 
-  
-    $ pajazzo@derpMaster:$ ssh pajazzo@192.168.1.8 -p 7373
-    $ pajazzo@derpSlave1:$ 
-  
-Yhteys toimi hyvin.  
+    Masterilla testaus: 
+    
+        $ pajazzo@derpMaster:$ ssh pajazzo@192.168.1.8 -p 7373
+        $ pajazzo@derpSlave1:$ 
+    
+    Yhteys toimi hyvin.  
   
 3. Salt asennus.  
   
-Loin /srv/salt sijaintiin ufw:lle oman sijantinsa ja sinne init.sls tiedoston johon laitoin aluksi vain paketin asennuksen ja palvelun käynnistämisen testauksen:  
-```
-pajazzo@derpMaster:$ sudo mkdir /srv/salt/ufw/
-pajazzo@derpMaster:$ cd /src/salt/ufw/
-pajazzo@derpMaster:$ micro init.sls
-pajazzo@derpMaster:$ cat init.sls 
-ufw:
-  pkg.installed
-ufw.service:
-  service.running:
-    - name: ufw
-pajazzo@derpMaster:$ sudo salt 'numberone' state.apply ufw
-### Molempien tilojen ajo onnistui, paketti oli jo asennettu ja palvelu käynnissä, joten muutoksia ei tehty
-```
+    Loin /srv/salt sijaintiin ufw:lle oman sijantinsa ja sinne init.sls tiedoston johon laitoin aluksi vain paketin asennuksen ja palvelun käynnistämisen testauksen:  
+    ```
+    pajazzo@derpMaster:$ sudo mkdir /srv/salt/ufw/
+    pajazzo@derpMaster:$ cd /src/salt/ufw/
+    pajazzo@derpMaster:$ micro init.sls
+    pajazzo@derpMaster:$ cat init.sls 
+    ufw:
+    pkg.installed
+    ufw.service:
+    service.running:
+        - name: ufw
+    pajazzo@derpMaster:$ sudo salt 'numberone' state.apply ufw
+    ### Molempien tilojen ajo onnistui, paketti oli jo asennettu ja palvelu käynnissä, joten muutoksia ei tehty
+    ```
 
-Asennus onnistui joten siirryin konfiguraatiovaiheeseen.    
+    Asennus onnistui joten siirryin konfiguraatiovaiheeseen.    
   
 4. Salt konfiguraatiohallinta.
   
-Tässä kohdassa jouduin vähän tutkimaan ufw:n konfiguraatiokansiota /etc/ufw/ löytääkseni, mikä/mitkä tiedostot pitävät sisällään halutut asetukset.  
-Loogisesti ajattelin, että tiedosto ufw.conf olisi tärkeä tähän. Kyseinen tiedosto pitääkin sisällään palomuurin palvelun käynnistämiseen tietokoneen käynnistämisen yhteydessä tarvittavan rivin, sekä palomuurin lokitason määrityksen. Hyödyllinen tiedosto eli otetaan talteen.  
-user.config ja user6.config tiedostot tuntuivat pitävän sisällään tehdyt porttien avaustiedot riveillä (**Huom.** rivit eivät ole täysin samanlaiset molemmissa user* tiedostoissa):  
-  
-    $ ### tuple ### allow tcp 7373 ::/0 any ::/0 in
-    $ -A ufw6-user-input -p tcp --dport 7373 -j ACCEPT
-  
-Loput /etc/ufw ja etc/ufw/applications.d/ tiedostoista eivät pitäneet sisällään näihin asetuksiin liittyviä tietueita. Tosin applications.d sijainnissa oleva openssh-server asetustiedosto määrittää portiksi 22 eli saman joka viime viikolla vaihdettiin porttiin 7373. Tämä kansio pitää oman ymmärrykseni mukaan sisällään sovellusten omia ufw -asetustiedostoja, jotka voidaan ajaa komennolla `sudo ufw allow *tiedoston_nimi*` eli tässä vaiheessa näistä ei tarvitse välittää.  
-  
-Tarpeelliset tiedostot siis, kopion näiden sisällöt erilliseen tiedostoon masterille:  
-/etc/ufw/ufw.conf  
-/etc/ufw/user.rules   
-/etc/ufw/user6.rules  
-   
-Seuraavaksi loin saltin ufw -sijaintiin tiedostoille oman kansion ja tarvittavien tiedostojen default-versiot:  
-  
-```
-pajazzo@derpMaster:$ sudo mkdir /srv/salt/ufw/files
-pajazzo@derpMaster:$ cd /srv/salt/ufw/files/
-pajazzo@derpMaster:$ sudo micro /srv/salt/ufw/files/user.rules-default
-pajazzo@derpMaster:$ sudo micro /srv/salt/ufw/files/user6.rules-default
-pajazzo@derpMaster:$ sudo micro /srv/salt/ufw/files/ufw.conf-default
-## Tiedostojen sisällöiksi minion -koneelta kopioidun vastaavan tiedoston sisältö. 
-pajazzo@derpMaster:$ ls
-ufw.conf-default  user6.rules-default  user.rules-default
-``` 
-  
-Muokkasin tiedostot saltin ufw:n init.sls hallintaan:  
-```
-pajazzo@derpMaster:$ sudo micro init.sls 
-ufw:
-  pkg.installed
-ufw.service:
-  service.running:
-    - name: ufw
-    - watch:
-      - file: /etc/ufw/ufw.conf
-      - file: /etc/ufw/user.rules
-      - file: /etc/ufw/user6.rules
-/etc/ufw/ufw.conf:
-  file.managed:
-    - source: salt://ufw/files/ufw.conf-default
-/etc/ufw/user.rules:
-  file.managed:
-    - source: salt://ufw/files/user.rules-default
-/etc/ufw/user6.rules:
-  file.managed:
-    - source: salt://ufw/files/user6.rules-default 
-```
-  
-Testasin jälleen ajaa tilat ja kaikki palautui onnistuneena ilman, että muutoksia tarvitsi tehdä.  
-Seuraavaksi poistin Minion -koneelta ufw:n kokonaan ja testasin tilojen ajamista:  
-```
-pajazzo@derpSlave1:$ sudo apt-get purge ufw
-[sudo] password for pajazzo: 
-pajazzo@derpSlave1:$ sudo systemctl stop ufw
-pajazzo@derpSlave1:$ sudo rm -r /etc/ufw 
-pajazzo@derpSlave1:$ exit
-pajazzo@derpMaster:$ sudo salt 'numberone' state.apply ufw
-## Kaikki 5 tilaa ajettu onnistuneesti ja tehty 5 muutosta
-```
-  
-Tämän jälkeen yritin ottaa ssh -yhteyden Minionille, mutta tämä ei onnistunutkaan enää. Komentorivi jäi vain välkyttämään tyhjää.  
-Avasin Minion koneen, ja tarkistin ufw:n tilan komennolla `ufw status`, joka vaikutti kyllä olevan päällä.  
-Ajoin tämän jälkeen komennon `ufw reload`, mikä päätyi iptables virheeseen, jonka onnistuin kadottamaan ja ongelmaan lukiessa tiedostoa user.rules.  
-Ajoin vielä komennon `ufw enable` ja sain palautteen: 
-  
-    $ pajazzo@derpSlave1:$ sudo ufw enable
-    $ Firewall is active and enabled on system startup
-  
-Testasin vielä käynnistää koneen uudelleen, minkä jälkeen kaikki lähti toimimaan normaalisti.   
-Selvittelin voisiko tästä selvitä eteenpäin ilman järjestelmän uudelleenkäynnistystä. Poistin uudestaan ufw:n, ajoin tilat ja ajoin komennon:  
-```    
-$pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw reload'
-numberone:
-ERROR: problem running ufw-init
-iptables-restore: line 38 failed
+    Tässä kohdassa jouduin vähän tutkimaan ufw:n konfiguraatiokansiota /etc/ufw/ löytääkseni, mikä/mitkä tiedostot pitävät sisällään halutut asetukset.  
+    Loogisesti ajattelin, että tiedosto ufw.conf olisi tärkeä tähän. Kyseinen tiedosto pitääkin sisällään palomuurin palvelun käynnistämiseen tietokoneen käynnistämisen yhteydessä tarvittavan rivin, sekä palomuurin lokitason määrityksen. Hyödyllinen tiedosto eli otetaan talteen.  
+    user.config ja user6.config tiedostot tuntuivat pitävän sisällään tehdyt porttien avaustiedot riveillä (**Huom.** rivit eivät ole täysin samanlaiset molemmissa user* tiedostoissa):  
+    
+        $ ### tuple ### allow tcp 7373 ::/0 any ::/0 in
+        $ -A ufw6-user-input -p tcp --dport 7373 -j ACCEPT
+    
+    Loput /etc/ufw ja etc/ufw/applications.d/ tiedostoista eivät pitäneet sisällään näihin asetuksiin liittyviä tietueita. Tosin applications.d sijainnissa oleva openssh-server asetustiedosto määrittää portiksi 22 eli saman joka viime viikolla vaihdettiin porttiin 7373. Tämä kansio pitää oman ymmärrykseni mukaan sisällään sovellusten omia ufw -asetustiedostoja, jotka voidaan ajaa komennolla `sudo ufw allow *tiedoston_nimi*` eli tässä vaiheessa näistä ei tarvitse välittää.  
+    
+    Tarpeelliset tiedostot siis, kopion näiden sisällöt erilliseen tiedostoon masterille:  
+    /etc/ufw/ufw.conf  
+    /etc/ufw/user.rules   
+    /etc/ufw/user6.rules  
+    
+    Seuraavaksi loin saltin ufw -sijaintiin tiedostoille oman kansion ja tarvittavien tiedostojen default-versiot:  
+    
+    ```
+    pajazzo@derpMaster:$ sudo mkdir /srv/salt/ufw/files
+    pajazzo@derpMaster:$ cd /srv/salt/ufw/files/
+    pajazzo@derpMaster:$ sudo micro /srv/salt/ufw/files/user.rules-default
+    pajazzo@derpMaster:$ sudo micro /srv/salt/ufw/files/user6.rules-default
+    pajazzo@derpMaster:$ sudo micro /srv/salt/ufw/files/ufw.conf-default
+    ## Tiedostojen sisällöiksi minion -koneelta kopioidun vastaavan tiedoston sisältö. 
+    pajazzo@derpMaster:$ ls
+    ufw.conf-default  user6.rules-default  user.rules-default
+    ``` 
+    
+    Muokkasin tiedostot saltin ufw:n init.sls hallintaan:  
+    ```
+    pajazzo@derpMaster:$ sudo micro init.sls 
+    ufw:
+    pkg.installed
+    ufw.service:
+    service.running:
+        - name: ufw
+        - watch:
+        - file: /etc/ufw/ufw.conf
+        - file: /etc/ufw/user.rules
+        - file: /etc/ufw/user6.rules
+    /etc/ufw/ufw.conf:
+    file.managed:
+        - source: salt://ufw/files/ufw.conf-default
+    /etc/ufw/user.rules:
+    file.managed:
+        - source: salt://ufw/files/user.rules-default
+    /etc/ufw/user6.rules:
+    file.managed:
+        - source: salt://ufw/files/user6.rules-default 
+    ```
+    
+    Testasin jälleen ajaa tilat ja kaikki palautui onnistuneena ilman, että muutoksia tarvitsi tehdä.  
+    Seuraavaksi poistin Minion -koneelta ufw:n kokonaan ja testasin tilojen ajamista:  
+    ```
+    pajazzo@derpSlave1:$ sudo apt-get purge ufw
+    [sudo] password for pajazzo: 
+    pajazzo@derpSlave1:$ sudo systemctl stop ufw
+    pajazzo@derpSlave1:$ sudo rm -r /etc/ufw 
+    pajazzo@derpSlave1:$ exit
+    pajazzo@derpMaster:$ sudo salt 'numberone' state.apply ufw
+    ## Kaikki 5 tilaa ajettu onnistuneesti ja tehty 5 muutosta
+    ```
+    
+    Tämän jälkeen yritin ottaa ssh -yhteyden Minionille, mutta tämä ei onnistunutkaan enää. Komentorivi jäi vain välkyttämään tyhjää.  
+    Avasin Minion koneen, ja tarkistin ufw:n tilan komennolla `ufw status`, joka vaikutti kyllä olevan päällä.  
+    Ajoin tämän jälkeen komennon `ufw reload`, mikä päätyi iptables virheeseen, jonka onnistuin kadottamaan ja ongelmaan lukiessa tiedostoa user.rules.  
+    Ajoin vielä komennon `ufw enable` ja sain palautteen: 
+    
+        $ pajazzo@derpSlave1:$ sudo ufw enable
+        $ Firewall is active and enabled on system startup
+    
+    Testasin vielä käynnistää koneen uudelleen, minkä jälkeen kaikki lähti toimimaan normaalisti.   
+    Selvittelin voisiko tästä selvitä eteenpäin ilman järjestelmän uudelleenkäynnistystä. Poistin uudestaan ufw:n, ajoin tilat ja ajoin komennon:  
+    ```    
+    $pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw reload'
+    numberone:
+    ERROR: problem running ufw-init
+    iptables-restore: line 38 failed
 
-Problem running '/etc/ufw/user.rules' ### Tämä oli sama virhe kuin ensimmäisellä yrityksellä
-pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw enable'
-numberone:
-    Firewall is active and enabled on system startup
-pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw reload'
-numberone:
-    Firewall reloaded ### Huomataan, että virhe poistui, kun ensin ajettiin ufw enable komento.  
-```
-  
-Tämän jälkeen myös yhteys lähti toimimaan koneelle, eli asetukset menivät oikein läpi ilman uudelleenkäynnistystä.  
-Pitää vielä testata miten tuon komentojen ajon saisi sisällytettyä asennuksen yhteyteen.  
-  
-Huomasin, että minulla oli **kirjoitusvirhe** tiedostossa srv/salt/ufw/files/user.rules-default, joka aiheutti ongelmakäyttäytymisen, jonka tuo enable + reload tai reboot yhdistelmä korjasi itsestään. Huomasin ongelman, kun tilojen ajaminen useamman kerran teki aina muutoksia kyseiseen tiedostoon, vaikkei siihen olisi koskettu välissä. Korjattuani virheen default-tiedostoon, alkoivat asetukset toimimaan kuten pitääkin.  
+    Problem running '/etc/ufw/user.rules' ### Tämä oli sama virhe kuin ensimmäisellä yrityksellä
+    pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw enable'
+    numberone:
+        Firewall is active and enabled on system startup
+    pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw reload'
+    numberone:
+        Firewall reloaded ### Huomataan, että virhe poistui, kun ensin ajettiin ufw enable komento.  
+    ```
+    
+    Tämän jälkeen myös yhteys lähti toimimaan koneelle, eli asetukset menivät oikein läpi ilman uudelleenkäynnistystä.  
+    Pitää vielä testata miten tuon komentojen ajon saisi sisällytettyä asennuksen yhteyteen.  
+    
+    Huomasin, että minulla oli **kirjoitusvirhe** tiedostossa srv/salt/ufw/files/user.rules-default, joka aiheutti ongelmakäyttäytymisen, jonka tuo enable + reload tai reboot yhdistelmä korjasi itsestään. Huomasin ongelman, kun tilojen ajaminen useamman kerran teki aina muutoksia kyseiseen tiedostoon, vaikkei siihen olisi koskettu välissä. Korjattuani virheen default-tiedostoon, alkoivat asetukset toimimaan kuten pitääkin.  
   
 ## f) Vapaaehtoinen: Laita srv/salt/ gittiin. Tee uusi moduli. Kloonaa varastosi toiselle koneelle (tai poista srv/salt ja palauta se kloonaamalla) ja jatka sillä.
 
