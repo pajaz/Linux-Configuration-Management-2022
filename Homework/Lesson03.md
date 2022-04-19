@@ -115,7 +115,11 @@ blame -komento näyttää tiedostoon tehdyt muutokset riveittäin. Tietue pitä�
   
 ## c) Huppis! Tee tyhmä muutos gittiin, älä tee commit:tia. Tuhoa huonot muutokset ‘git reset --hard’. Huomaa, että tässä toiminnossa ei ole peruutusnappia.
 
+<<<<<<< HEAD
 Poistin koko Homework sijainnin paikallisesta versiostani ja käytin git reset --hard komentoa, joka palautti repositorioini edellisen commitin tilaan, kuten viimeisestä git log -komennosta huomataan:  
+=======
+Poistin koko Homework sijainnin paikallisesta versiostani ja käytin git reset --hard komentoa, joka palautti repositorioini edellisen commitin tilaan:  
+>>>>>>> 63a8f531db7c8b4796b6e61deaa11898773779b2
 ```
 pajazzo@derpface:$ rm -r Homework/
 pajazzo@derpface:$ 
@@ -125,6 +129,7 @@ pajazzo@derpface:$ git reset --hard
 HEAD is now at 808fb02 Add Lesson03.md assignment b
 pajazzo@derpface:$ ls
 Homework  PersonalNotes  README.md  
+<<<<<<< HEAD
 pajazzo@derpface:$ git log
 commit 808fb0222a54792dbb3744102fb306740dceef81 (HEAD -> main, origin/main, origin/HEAD)
 Author: pajaz <mikko.pajunen@myy.haaga-helia.fi>
@@ -180,6 +185,9 @@ Homework  PersonalNotes  README.md
   
 Kammottava virhe korjattu.  
 
+=======
+```
+>>>>>>> 63a8f531db7c8b4796b6e61deaa11898773779b2
 
 ## d) Formula. Tee uusi salt-tila (formula, moduli, infraa koodina). (Eli uusi tiedosto esim. /srv/salt/terontila/init.sls). Voit tehdä ihan yksinkertaisen parin funktion (pkg, file...) tilan, tai edistyneemmin asentaa ja konfiguroida minkä vain uuden ohjelman: demonin, työpöytäohjelman tai komentokehotteesta toimivan ohjelman. Käytä tarvittaessa ‘find -printf “%T+ %p\n”|sort’ löytääksesi uudet asetustiedostot.
 
