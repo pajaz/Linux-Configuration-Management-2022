@@ -341,7 +341,7 @@ Ajoin vielä komennon `ufw enable` ja sain palautteen:
     $ Firewall is active and enabled on system startup
   
 Testasin vielä käynnistää koneen uudelleen, minkä jälkeen kaikki lähti toimimaan normaalisti.   
-Selvittelin voisiko tästä selvitä eteenpäin ilman järjestelmän uudelleenkäynnistystä. Poistin uudestaan ufw:n ja ajoin komennon:  
+Selvittelin voisiko tästä selvitä eteenpäin ilman järjestelmän uudelleenkäynnistystä. Poistin uudestaan ufw:n, ajoin tilat ja ajoin komennon:  
 ```    
 $pajazzo@derpMaster:$ sudo salt 'numberone' cmd.run 'ufw reload'
 numberone:
@@ -361,7 +361,7 @@ Tämän jälkeen myös yhteys lähti toimimaan koneelle, eli asetukset menivät 
 Pitää vielä testata miten tuon komentojen ajon saisi sisällytettyä asennuksen yhteyteen.  
   
 Huomasin, että minulla oli **kirjoitusvirhe** tiedostossa srv/salt/ufw/files/user.rules-default, joka aiheutti ongelmakäyttäytymisen, jonka tuo enable + reload tai reboot yhdistelmä korjasi itsestään. Huomasin ongelman, kun tilojen ajaminen useamman kerran teki aina muutoksia kyseiseen tiedostoon, vaikkei siihen olisi koskettu välissä. Korjattuani virheen default-tiedostoon, alkoivat asetukset toimimaan kuten pitääkin.  
-
+  
 ## f) Vapaaehtoinen: Laita srv/salt/ gittiin. Tee uusi moduli. Kloonaa varastosi toiselle koneelle (tai poista srv/salt ja palauta se kloonaamalla) ja jatka sillä.
 
 ## e) Vapaaehtoinen: Omaa koiranruokaa. Säädä jotain käyttämääsi konetta Saltilla.
