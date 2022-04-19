@@ -9,3 +9,4 @@ Lesson | Description
 ---|---
 [Lesson 01](Homework/Lesson01.md) | Hei maailma & monet tilat 
 [Lesson 02](Homework/Lesson02.md) | package-file-service  
+[Lesson 03](Homework/Lesson03.md) | Versionhallinta  
