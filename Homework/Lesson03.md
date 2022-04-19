@@ -233,7 +233,7 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
     $ ## palvelimen uudelleenkäynnistys
     $ sudo ufw status
     $ sudo systemctl status ufw.service
-  
+
 Molemmat status-checkit ilmoittivat palomuurin olevan päällä.  
   
 2. Manuaalinen porttien avaus ja ssh-yhteyden testaus.    
