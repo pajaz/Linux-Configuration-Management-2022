@@ -115,6 +115,18 @@ blame -komento näyttää tiedostoon tehdyt muutokset riveittäin. Tietue pitä�
   
 ## c) Huppis! Tee tyhmä muutos gittiin, älä tee commit:tia. Tuhoa huonot muutokset ‘git reset --hard’. Huomaa, että tässä toiminnossa ei ole peruutusnappia.
 
+Poistin koko Homework sijainnin paikallisesta versiostani ja käytin git reset --hard komentoa, joka palautti repositorioini edellisen commitin tilaan:  
+```
+pajazzo@derpface:$ rm -r Homework/
+pajazzo@derpface:$ 
+pajazzo@derpface:$ ls
+PersonalNotes  README.md
+pajazzo@derpface:$ git reset --hard
+HEAD is now at 808fb02 Add Lesson03.md assignment b
+pajazzo@derpface:$ ls
+Homework  PersonalNotes  README.md  
+```
+
 ## d) Formula. Tee uusi salt-tila (formula, moduli, infraa koodina). (Eli uusi tiedosto esim. /srv/salt/terontila/init.sls). Voit tehdä ihan yksinkertaisen parin funktion (pkg, file...) tilan, tai edistyneemmin asentaa ja konfiguroida minkä vain uuden ohjelman: demonin, työpöytäohjelman tai komentokehotteesta toimivan ohjelman. Käytä tarvittaessa ‘find -printf “%T+ %p\n”|sort’ löytääksesi uudet asetustiedostot.
 
 ## f) Vapaaehtoinen: Laita srv/salt/ gittiin. Tee uusi moduli. Kloonaa varastosi toiselle koneelle (tai poista srv/salt ja palauta se kloonaamalla) ja jatka sillä.
