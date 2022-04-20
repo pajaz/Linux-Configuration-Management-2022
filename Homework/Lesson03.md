@@ -302,9 +302,6 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
     pajazzo@derpMaster:$ sudo micro init.sls 
     ufw:
       pkg.installed
-    ufw.service:
-      service.running:
-        - name: ufw
     /etc/ufw/ufw.conf:
       file.managed:
         - source: salt://ufw/files/ufw.conf-default
@@ -314,6 +311,8 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
     /etc/ufw/user6.rules:
       file.managed:
         - source: salt://ufw/files/user6.rules-default 
+    ufw.service:
+      service.running
     ```
     
     Testasin jälleen ajaa tilat ja kaikki palautui onnistuneena ilman, että muutoksia tarvitsi tehdä.  
