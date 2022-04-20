@@ -305,8 +305,6 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
     ufw.service:
       service.running:
         - name: ufw
-        - watch:
-          - file: /etc/ufw/ufw.conf
     /etc/ufw/ufw.conf:
       file.managed:
         - source: salt://ufw/files/ufw.conf-default
