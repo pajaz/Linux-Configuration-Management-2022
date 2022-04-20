@@ -258,9 +258,9 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
     pajazzo@derpMaster:$ micro init.sls
     pajazzo@derpMaster:$ cat init.sls 
     ufw:
-    pkg.installed
+      pkg.installed
     ufw.service:
-    service.running:
+      service.running:
         - name: ufw
     pajazzo@derpMaster:$ sudo salt 'numberone' state.apply ufw
     ### Molempien tilojen ajo onnistui, paketti oli jo asennettu ja palvelu käynnissä, joten muutoksia ei tehty
@@ -301,22 +301,20 @@ Päätin asentaa Minion -koneelleni 'numberone' palomuurin.
     ```
     pajazzo@derpMaster:$ sudo micro init.sls 
     ufw:
-    pkg.installed
+      pkg.installed
     ufw.service:
-    service.running:
+      service.running:
         - name: ufw
         - watch:
-        - file: /etc/ufw/ufw.conf
-        - file: /etc/ufw/user.rules
-        - file: /etc/ufw/user6.rules
+          - file: /etc/ufw/ufw.conf
     /etc/ufw/ufw.conf:
-    file.managed:
+      file.managed:
         - source: salt://ufw/files/ufw.conf-default
     /etc/ufw/user.rules:
-    file.managed:
+      file.managed:
         - source: salt://ufw/files/user.rules-default
     /etc/ufw/user6.rules:
-    file.managed:
+      file.managed:
         - source: salt://ufw/files/user6.rules-default 
     ```
     
