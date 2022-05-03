@@ -144,7 +144,9 @@ $ ls scripts/
 hello  helloworld  whatsup
 ```
 
-Ajoin tilan orjille `$ sudo salt '*' state.apply userscript`, mutta muutoksia ei tarvinnut tehdä, koska tiedostot olivat jo olemassa. Testasin tilan toimintaa tyhjentämällä yhdeltä orjalta kohdekansion sijainnin:
+Lähde file.recurse käytölle: salt-call --local sys.state_doc file.recurse
+
+Ajoin tilan orjille `$ sudo salt '*' state.apply userscripts`, mutta muutoksia ei tarvinnut tehdä, koska tiedostot olivat jo olemassa. Testasin tilan toimintaa tyhjentämällä yhdeltä orjalta kohdekansion sijainnin:
 ```
 $ sudo salt 'numberone' cmd.run 'rm /usr/local/bin/*'
 numberone:
