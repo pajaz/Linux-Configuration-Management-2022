@@ -291,5 +291,5 @@ Done.
 
 ## g) Anna palaute kahdelle opiskelukaverille Laksussa. (Täsmennys: siis tästä tehtävästä h5)
 
+Done
 
-i) Vapaaehtoinen: The drill. Ota uusi virtuaalikone. Ota snapshot (tai käytä Vagrantia). Rakenna perusasiat: Hei Saltin maailma, herra-orja, package-file-service, git clone. Kokeile että kaikki toimii. Palaa alkuun (palauta snapshot tai 'vagrant destroy'). Toista. Toista.h5 Uusi komento
