@@ -10,3 +10,5 @@ Lesson | Description
 [Lesson 01](Homework/Lesson01.md) | Hei maailma & monet tilat 
 [Lesson 02](Homework/Lesson02.md) | package-file-service  
 [Lesson 03](Homework/Lesson03.md) | Versionhallinta  
+[Lesson 04](Homework/Lesson04.md) | Aikajana
+[Lesson 05](Homework/Lesson05.md) | Uusi komento
