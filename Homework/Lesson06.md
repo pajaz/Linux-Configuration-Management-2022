@@ -2,7 +2,12 @@
 
 ## v) Lue ja tiivistä artikkeli muutamalla ranskalaisella viivalla. Tässä z-alakohdassa ei tarvitse siis tehdä testejä tietokoneella.
 
-    Karvinen 2018: Control Windows with Salt
+### [Karvinen 2018: Control Windows with Salt](https://terokarvinen.com/2018/04/18/control-windows-with-salt/)
+
+- Artikkeli käy läpi Windowsin kontrolloin saltin kanssa
+- Itse kontroillointi näyttää hyvin samanlaiselta kuin Linux koneidenkin kanssa
+- Saltin Asentaminen on hieman hankalampaa johtuen Windowsin graafisesta asennu käyttöliittymästä
+- Paketinhallinta joka kannattaa laittaa mieleen: Chocolatey
 
 ## a) Suolaikkuna. Asenna Salt Windowsiin. Jos ehdit jo asentaa, voit kirjoittaa muistinvaraisesti, mutta muista silloin merkitä, että tämä on muistista kirjoitettu. Näytä testillä (test.ping, file.managed tms), että Salt toimii.
 
