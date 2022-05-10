@@ -125,24 +125,9 @@ Kaikki näyttäisi ainakin paikallisesti toimivan.
 
 ## c) IaCcuna. Tee Windowsissa infraa koodina, ja aja se paikallisesti (salt-call --local state.apply foo)  
 
-Tein tilan joka asentaa gitin Windowsiin. Kokeilin luoda /srv/salt hakemiston C-aseman juureen ja ajaa tilan, mutta se ei toiminut. Kun ajan tilan komennolla `salt --local -l debug state.apply git` välähtää uusi komentorivi edessäni, siihen tulostuu tekstiä ja sitten ikkuna sulkeutuu ilman, että ehdin tuota tekstiä analysoida tarkemmin.  
+Tein tilan joka asentaa gitin Windowsiin. Kokeilin luoda /srv/salt hakemiston C:/ProgramData/Salt Project/ sijantiin ja ajaa tilan, mutta se ei toiminut. Kun ajan tilan komennolla `salt --local -l debug state.apply git` välähtää uusi komentorivi edessäni, siihen tulostuu tekstiä ja sitten ikkuna sulkeutuu ilman, että ehdin tuota tekstiä analysoida tarkemmin.   
 
-Loin vielä toisen tilan joka vain printtaa "hello world":
-```
-PS C:\srv\salt> salt-call --local state.apply hello -l debug
-[DEBUG   ] Could not find file 'salt://hello.sls' in saltenv 'base'
-[DEBUG   ] Could not find file 'salt://hello/init.sls' in saltenv 'base'
-PS C:\srv\salt\hello> ls
-
-
-    Directory: C:\srv\salt\hello
-
-
-Mode                LastWriteTime         Length Name
-----                -------------         ------ ----
--a----        5/10/2022   5:40 AM             38 init.sls
-
-```
+Loin vielä toisen tilan joka vain printtaa "hello world", mutta tämä toimi samalla tavalla.
 
 Tähän jäi yritykseni Windowsin osalta, koska en tosiaan saa myöskään yhteyttä Linux masteriltani Windowsiin saltin kanssa.  
 
