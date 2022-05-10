@@ -12,3 +12,4 @@ Lesson | Description
 [Lesson 03](Homework/Lesson03.md) | Versionhallinta  
 [Lesson 04](Homework/Lesson04.md) | Aikajana
 [Lesson 05](Homework/Lesson05.md) | Uusi komento
+[Lesson 06](Homework/Lesson06.md) | akkuna
