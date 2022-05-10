@@ -127,9 +127,31 @@ Kaikki näyttäisi ainakin paikallisesti toimivan.
 
 Tein tilan joka asentaa gitin Windowsiin. Kokeilin luoda /srv/salt hakemiston C:/ProgramData/Salt Project/ sijantiin ja ajaa tilan, mutta se ei toiminut. Kun ajan tilan komennolla `salt --local -l debug state.apply git` välähtää uusi komentorivi edessäni, siihen tulostuu tekstiä ja sitten ikkuna sulkeutuu ilman, että ehdin tuota tekstiä analysoida tarkemmin.   
 
-Loin vielä toisen tilan joka vain printtaa "hello world", mutta tämä toimi samalla tavalla.
+Loin vielä toisen tilan joka vain printtaa "hello world", mutta tämä toimi samalla tavalla. Käynnistin Powershellin uudestaan ja tulokset muuttuivat: 
+```
+PS C:\Windows\system32> salt-call --local state.apply hello                                                             local:                                                                                                                      
+Data failed to compile:                                                                                             ----------                                                                                                                  
+No matching sls found for 'hello' in env 'base'
+```
 
-Tähän jäi yritykseni Windowsin osalta, koska en tosiaan saa myöskään yhteyttä Linux masteriltani Windowsiin saltin kanssa.  
+Siirsin srv kansion seuraavaksi sijaintiin C:/ProgramData/Salt Project/Salt ja komennot alkoivat toimia:
+```
+PS C:\Windows\system32> salt-call --local state.apply hello                                                             local:                                                                                                                  ----------                                                                                                                        
+ID: echo hello world                                                                                              
+Function: cmd.run                                                                                                         
+Result: True                                                                                                           
+Comment: Command "echo hello world" run                                                                                 
+Started: 06:00:29.463021                                                                                               
+Duration: 15.505 ms                                                                                                      Changes:                                                                                                                         ----------                                                                                                              pid:                                                                                                                        828                                                                                                                 retcode:                                                                                                                    0                                                                                                                   stderr:                                                                                                                 stdout:                                                                                                                     
+hello world                                                                                                                                                                                                                   
+Summary for local                                                                                                       ------------                                                                                                            
+Succeeded: 1 (changed=1)                                                                                                
+Failed:    0                                                                                                            ------------                                                                                                            
+Total states run:     1                                                                                                 
+Total run time:  15.505 ms 
+```
+
+Tähän riittää toistaiseksi Windowsin kanssa. Palaan takaisin Linuxiin, koska tuo virtuaalikoneella oleva Windowsini pyörii tuskallisen hitaasti.    
 
 ## e) Goal. Tee projektisi palautussivu. Voit tehdä sen GitHubiin, kotisivullesi tai mihin vain haluat. Mistä teet miniprojektin? Kuvaile miniprojektin tarkoitus lauseella tai parilla. Asenna käsin (jokin alustava osa) projektistasi ja ota ruutukaappaus siitä, miten lopputulosta käytetään. Tietysti pääset tekemään paremman ruutukaappauksen, kun projektisi on valmis. Valitse projektille lisenssi (suosittelen GPL 2, voit valita lisenssin vapaasti). Laita sivulle nimesi (tai jos haluat, nimimerkki, mutta suosittelen nimeä). Ja lähdekoodiksi vaikkapa vain Saltin hei maailma. Kirjoita ohje, miten projektisi otetaan käyttöön. Kirjoita projektin kypsyys näkyviin, tässä vaiheessa se on varmaankin alpha, eli vasta aloitettu eikä vielä voi varsinaisesti edes kunnolla testata. Yritä tehdä sivu, jossa tärkeimmät asiat näkyvät taitoksen yllä (skrollaamatta): tarkoitus, ruutukaapaus, lisenssi, nimesi, latauslinkki, kypsyysaste (alpha). Tässä vaiheessa projektin ei vielä tarvitse toimia, vaan kaikkiin osiin tehdään vielä parannuksia. Voit kirjoittaa englanniksi tai suomeksi, suosittelen englantia.
 
