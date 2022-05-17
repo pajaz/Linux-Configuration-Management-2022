@@ -159,5 +159,8 @@ Linkki palautusprojektin sivulle: https://github.com/pajaz/final-module-linux-co
 
 ## f) Palauta linkki raporttiisi Laksuun.
 
+Done. 
+
 ## g) Anna tästä tehtävästä palaute vähintään kahdelle opiskelukaverille Laksussa.
 
+Done. 
