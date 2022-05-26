@@ -22,4 +22,4 @@ Final module | https://github.com/pajaz/final-module-linux-conf-mgmt2022
 
 ## c) Oma moduli (iso tehtävä). Ratkaise jokin oikean elämän tai keksitty tarve omilla tiloilla/moduleilla. Voit käyttää Salttia tai muuta valitsemaasi modernia keskitetyn hallinnan ohjelmaa. Esitä tulos viimeisellä opetuskerralla, 5-10 min. Live demo olisi kiva. Raportoi modulisi tarkoitus, koodi ja testit.
 
-https://github.com/pajaz/final-module-linux-conf-mgmt2022
+https://github.com/pajaz/saltstack-users-and-servers-environment
