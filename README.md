@@ -14,4 +14,4 @@ Lesson | Description
 [Lesson 05](Homework/Lesson05.md) | Uusi komento
 [Lesson 06](Homework/Lesson06.md) | akkuna
 [Lesson 07](Homework/Lesson07.md) | Oma Moduuli
-[Salt multi-user and server configuration](https://github.com/pajaz/final-module-linux-conf-mgmt2022) | Omavalintainen loppumoduuli
+[Salt multi-user and server configuration](https://github.com/pajaz/saltstack-users-and-servers-environment) | Omavalintainen loppumoduuli
